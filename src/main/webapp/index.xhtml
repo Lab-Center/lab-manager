@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Envie arquivos para o professor!</title>
+        <style>
+            html { 
+                background: url(./resources/imagens/bg.jpg) no-repeat center center fixed; 
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+                padding-bottom: 30px;
+                
+                 /* IE 5.5+ support #BB000000 is ~70% opacity on black */
+/*                filter:progid:DXImageTransform.Microsoft.gradient(
+                    startColorstr=#AAFFFFFF, endColorstr=#AAFFFFFF
+                );*/
+
+                /*IE 8 support */
+                -ms-filter: "progid:DXImageTransform.Microsoft.gradient(
+                    startColorstr=#AAFFFFFF, endColorstr=#AAFFFFFF
+                )";
+            }
+            .transparente {background-color:rgba(255,255,255,0.6);}
+        </style>
+<!--            .transparente {background: #fff; opacity:0.4; filter:alpha(opacity=40);}-->
+    </h:head>
+    <h:body>
+        <h:form id="frm"  enctype="multipart/form-data">
+            <h:panelGroup layout="block" style="width: 900px; margin: 0 auto;  padding: 20px" class="transparente ui-corner-all">
+                <h:graphicImage library="imagens" name="logo_iftm.png" style="padding-left: 50%; margin-left: -150px"/>
+                <h:panelGrid columns="1" style="margin-bottom: 20px; margin-top: 20px; width: 100%">
+                    <p:messages autoUpdate="true" showDetail="true" showSummary="true" id="message"></p:messages>
+                    <h:panelGroup rendered="#{loginView.alunoLogado != null}">
+                        <h:outputLabel value="Aluno(a):"></h:outputLabel>
+                        <h:outputLabel value="#{loginView.alunoLogado.nome}"></h:outputLabel>
+                        <p:commandButton value="Sair" action="#{loginView.deslogar()}" update="@all"></p:commandButton>
+                    </h:panelGroup>
+                    <h:outputLabel value="Seu nome:"></h:outputLabel>
+                    <p:inputText size="40" maxlength="60" placeholder="Informe seu nome completo" value="#{fileSubmite.nome}">
+                      <p:ajax event="change" delay="2" process="@form" update="@this"></p:ajax>
+                    </p:inputText>
+                    <p:fileUpload label="Selecione ou arraste aqui o arquivo" process=":frm" immediate="true" auto="true" fileUploadListener="#{fileSubmite.uploadImagem}" multiple="true" update=":frm" sizeLimit="10240000" invalidSizeMessage="Arquivo muito grande! Máxmimo 10MB!"></p:fileUpload>
+                </h:panelGrid>
+<!--                <p:ajaxStatus onstart="PF('dialogAjax').show()" oncomplete="PF('dialogAjax').hide()" onerror="PF('dialogAjax').hide()" onsuccess="PF('dialogAjax').hide()" id="ajaxStatusPanel">  
+                        <p:dialog height="70" width="260" widgetVar="dialogAjax" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                            <h:panelGrid columns="2" columnClasses="columnEsquerda, columnDireita">
+                                <h:graphicImage library="imagens" name="ajax.gif" />
+                                <h:outputText style="float: right; vertical-align: middle; font-weight: bold" value="Processando!"></h:outputText>
+                            </h:panelGrid>
+                        </p:dialog>
+                </p:ajaxStatus> -->
+                <p:dataList value="#{fileSubmite.listaDeArquivosEnviados}" var="f" emptyMessage="Nenhum arquivo enviado por você!">
+                    <f:facet name="header">
+                        Arquivos já enviados!
+                    </f:facet>
+                    #{f}
+                </p:dataList>
+            </h:panelGroup>
+        </h:form>
+        <h:panelGroup class="transparente" style="width: 100%; position: fixed; bottom: 0; height: 20px; left: 0" layout="block">
+            <h:panelGroup layout="block" style="margin: 0 auto; text-align: center; width: 100%">
+                <h:outputText value="Danilo Souza Almeida - professordaniloalmeida@gmail.com" style="font-size: 12pt; color: #222; line-height: 20px"></h:outputText>
+            </h:panelGroup>
+        </h:panelGroup>
+<!--        <p:dialog header="Login:" visible="#{loginView.alunoLogado == null}" closable="false" modal="true">
+            <h:form>
+                <p:messages autoUpdate="true" showDetail="true"></p:messages>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Login" for="login"></h:outputLabel>
+                    <p:inputText value="#{loginView.login}"></p:inputText>
+                    <h:outputLabel value="senha" for="senha"></h:outputLabel>
+                    <p:password id="senha" value="#{loginView.senha}"></p:password>
+                    <p:commandButton value="Entar" action="#{loginView.logar()}" update="@form"></p:commandButton>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>-->
+    </h:body>
+</html>
+
